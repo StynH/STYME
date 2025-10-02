@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    
+    <PropertyGroup>
+        <Version>0.1.0</Version>
+        <Summary>A zero-dependency library that allows for manipulating dates and times using natural language.</Summary>
+        <Description>A zero-dependency library that allows for manipulating dates and times using natural language.</Description>
+        <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+        <LangVersion>13.0</LangVersion>
+        <AssemblyName>STYME</AssemblyName>
+        <Nullable>enable</Nullable>
+        <SignAssembly>true</SignAssembly>
+        <PackageId>STYME</PackageId>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+        <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+        <NoWarn>$(NoWarn);IDE0058;IDE0046;</NoWarn>
+        <PackageTags>datetime date time natural language parsing manipulation</PackageTags>
+        <RepositoryUrl>https://github.com/StynH/.NET-Flint</RepositoryUrl>
+        <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\..\icon.png" Pack="true" PackagePath="" Visible="False" />
+        <None Include="..\..\README.md" Pack="true" PackagePath="" Visible="False" />
+        <None Include="..\..\LICENSE.md" Pack="true" PackagePath="" Visible="False" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <Version>0.1.0</Version>
+        <PackageReleaseNotes>
+            - Initial release
+        </PackageReleaseNotes>
+    </PropertyGroup>
+
+</Project>
