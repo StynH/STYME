@@ -1,263 +1,92 @@
 ﻿# ![Icon](logo.png) 
-![NuGet Version](https://img.shields.io/nuget/v/Flint)
+![NuGet Version](https://img.shields.io/nuget/v/STYME)
 
-Flint is a lightweight, zero-dependency C# library that provides fast text matching utilities using the [Aho-Corasick algorithm](https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_algorithm).
+STYME is a lightweight, zero-dependency C# library for parsing simple natural-language date/time expressions and applying them to a base date/time.
 
 ## Usage Examples
 
 ### Basic
 
 ```csharp
-using Flint;
+using STYME;
 
-var matcher = new TextMatcher(new[] { "cat", "dog" });
-var results = matcher.Find("The dog chased the cat.");
+// By default NaturalDateTime uses the current system time as the base
+var parser = new NaturalDateTime();
+var result = parser.Parse("add 2 days");
+Console.WriteLine(result);
+```
 
-foreach (var match in results)
-{
-    Console.WriteLine($"Found '{match.Value}' at index {match.StartIndex}.");
-}
+Output (example):
+
+```
+2025-10-04T14:23:00
+```
+
+You can also parse expressions relative to a specific `DateTime` using `NaturalDateTime.From`.
+
+```csharp
+using STYME;
+
+var baseTime = new DateTime(2020, 1, 1, 0, 0, 0);
+var parser = NaturalDateTime.From(baseTime);
+var result = parser.Parse("add 1 month");
+Console.WriteLine(result);
 ```
 
 Output:
 
 ```
-Found 'dog' at index 4.
-Found 'cat' at index 19.
+2020-02-01T00:00:00
 ```
 
-An optional ```StringComparison``` can be passed to ```TextMatcher```, influencing it's behavior when performing searches/replacement.
-If none is given, it will default to ```StringComparison.CurrentCulture```.
+### Deduct / Subtract
+
+You can subtract time using the `deduct` (or `subtract`) keyword. The expression works the same as `add` but shifts the base time backwards.
 
 ```csharp
-using Flint;
+using STYME;
 
-var matcher = new TextMatcher(new[] { "cat", "dog" }, StringComparison.OrdinalIgnoreCase);
-var results = matcher.Find("The DOG chased the CaT.");
-
-foreach (var match in results)
-{
-    Console.WriteLine($"Found '{match.Value}' at index {match.StartIndex}.");
-}
+var baseTime = new DateTime(2020, 3, 1, 12, 0, 0);
+var parser = NaturalDateTime.From(baseTime);
+var result = parser.Parse("deduct 1 month");
+Console.WriteLine(result);
 ```
 
 Output:
 
 ```
-Found 'DOG' at index 4.
-Found 'CaT' at index 19.
+2020-02-01T12:00:00
 ```
 
-### Find with a callback
+### Supported units with `add` and `deduct`
 
-`TextMatcher` provides an overload of `Find` that accepts a callback invoked for each match. This can be convenient to process matches as they are found without allocating a results collection.
+The `add` and `deduct` expressions support the following units (singular and plural forms):
+
+- `second`, `seconds`
+- `minute`, `minutes`
+- `hour`, `hours`
+- `day`, `days`
+- `week`, `weeks`
+- `month`, `months`
+- `year`, `years`
+- `decade`, `decades`
+- `century`, `centuries`
+- `millennium`, `millennia`
+
+Example:
 
 ```csharp
-using Flint;
+using STYME;
 
-var matcher = new TextMatcher(new[] { "cat", "dog" });
-matcher.Find("The dog chased the cat.", match =>
-{
-    Console.WriteLine($"Found '{match.Value}' at index {match.StartIndex}.");
-});
-```
-
-Output:
-
-```
-Found 'dog' at index 4.
-Found 'cat' at index 19.
-```
-
-### Scan multiple texts with `FindAll`
-
-```csharp
-using Flint;
-
-var patterns = new[] { "cat", "dog", "bird" };
-var matcher = new TextMatcher(patterns);
-
-var texts = new[]
-{
-    "The dog chased the cat.",
-    "A bird watched them from above.",
-    "No animals here."
-};
-
-var all = matcher.FindAll(texts);
-
-foreach (var kv in all)
-{
-    Console.WriteLine(kv.Key);
-    foreach (var m in kv.Value)
-    {
-        Console.WriteLine($"Found '{m.Value}' at index {m.StartIndex}.");
-    }
-}
-```
-
-Example output:
-
-```
-The dog chased the cat.
-Found 'cat' at index 19.
-Found 'dog' at index 4.
-A bird watched them from above.
-Found 'bird' at index 2.
-No animals here.
-```
-
-If you need to scan many input strings and handle matches as they are discovered, use the `FindAll` overload that accepts an `Action<string, Match>` callback. The callback receives the original text and the match.
-
-```csharp
-using Flint;
-
-var patterns = new[] { "cat", "dog" };
-var matcher = new TextMatcher(patterns);
-
-var texts = new[]
-{
-    "The dog chased the cat.",
-    "A bird watched from above.",
-};
-
-matcher.FindAll(texts, (text, match) =>
-{
-    Console.WriteLine(text);
-    Console.WriteLine($"Found '{match.Value}' at index {match.StartIndex}.");
-});
-```
-
-Example output:
-
-```
-The dog chased the cat.
-Found 'dog' at index 4.
-Found 'cat' at index 19.
-A bird watched from above.
-```
-
-### Exact (whole-word) matching with `MatchMode`
-
-The `MatchMode` enum lets you require matches to be whole words. This prevents short patterns from matching inside longer words (for example, preventing "he" from matching inside "she").
-
-```csharp
-using Flint;
-
-var patterns = new[] { "he", "she" };
-var matcher = new TextMatcher(patterns, StringComparison.CurrentCulture, MatchMode.ExactMatch);
-
-var results = matcher.Find("she sells seashells.");
-
-foreach (var m in results)
-{
-    Console.WriteLine($"Found '{m.Value}' at index {m.StartIndex}.");
-}
-```
-
-Output (only the whole-word `she` is matched):
-
-```
-Found 'she' at index 0.
-```
-
-### Overlapping and nested matches
-
-```csharp
-using Flint;
-
-var matcher = new TextMatcher(new[] { "he", "she", "his", "hers" });
-var results = matcher.Find("she is his hero");
-
-foreach (var m in results)
-{
-    Console.WriteLine($"Found '{m.Value}' at index {m.StartIndex}.");
-}
-```
-
-Example output:
-
-```
-Found 'she' at index 0.
-Found 'he' at index 1.
-Found 'his' at index 7.
-Found 'he' at index 10.
-```
-
-### Replace all matches with a single value
-
-```csharp
-using Flint;
-
-var matcher = new TextMatcher(new[] { "cat", "dog" });
-var replaced = matcher.Replace("The dog chased the cat.", "animal");
-Console.WriteLine(replaced);
-```
-
-Output:
-
-```
-The animal chased the animal.
-```
-
-### Replace matches using a function
-
-```csharp
-using Flint;
-
-var matcher = new TextMatcher(new[] { "cat", "dog" });
-var replaced = matcher.Replace(
-    "The dog chased the cat.",
-    match => match.Value.ToUpper()
-);
-Console.WriteLine(replaced);
-```
-
-Output:
-
-```
-The DOG chased the CAT.
-```
-
-### Replace each pattern with a different value
-
-```csharp
-using Flint;
-
-var matcher = new TextMatcher(new[] { "cat", "dog" });
-var replaced = matcher.Replace(
-    "The dog chased the cat.",
-    new[] { "feline", "canine" }
-);
-Console.WriteLine(replaced);
-```
-
-Output:
-
-```
-The canine chased the feline.
-```
-
-### Load patterns from a file
-
-```csharp
-using Flint;
-
-var patterns = File.ReadAllLines("patterns.txt")
-                   .Where(l => !string.IsNullOrWhiteSpace(l));
-
-var matcher = new TextMatcher(patterns);
-
-var text = File.ReadAllText("large_input.txt");
-var hits = matcher.Find(text).ToArray();
-
-Console.WriteLine($"Found {hits.Length} matches.");
+var parser = NaturalDateTime.From(new DateTime(2000, 1, 1));
+Console.WriteLine(parser.Parse("add 2 decades")); // 2020-01-01
+Console.WriteLine(parser.Parse("deduct 1 century")); // 1900-01-01
 ```
 
 ## Support
 
-* .NET Standard 2.0 and .NET 8.0
+* .NET 8.0 and later
 
 ## License
 
-Flint is licensed under the [MIT License](LICENSE).
+STYME is licensed under the [MIT License](LICENSE).

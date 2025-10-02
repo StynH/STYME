@@ -1,6 +1,8 @@
 <Solution>
   <Folder Name="/Solution Items/">
+    <File Path="CHANGELOG.md" />
     <File Path="Directory.Packages.props" />
+    <File Path="README.md" />
   </Folder>
   <Project Path="src/STYME.UnitTests/STYME.UnitTests.csproj" Id="2dc125cf-fb41-4adc-b8d7-48e2122ceec9" />
   <Project Path="src/STYME/STYME.csproj" />

@@ -29,7 +29,7 @@ public class NaturalDateTime
         var root = _expressionParser.ParseExpressionTree(tokens)!;
 
         var result = root.ExecuteExpression(_mutableTime);
-        if(result.TryGet<IMutableTime>(out var mutableTime))
+        if (result.TryGet<IMutableTime>(out var mutableTime))
         {
             return mutableTime.ToExternal();
         }

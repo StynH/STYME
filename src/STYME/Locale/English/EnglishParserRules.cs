@@ -10,45 +10,51 @@ internal sealed class EnglishParserRules : ParserRules
 
     public EnglishParserRules()
     {
-        _timeUnitMap = new(StringComparer.OrdinalIgnoreCase)
+        _timeUnitMap = new(StringComparer.OrdinalIgnoreCase);
+        void AddTimeUnitAliases(Func<double, TimeSpan> converter, params string[] names)
         {
-            ["second"] = TimeSpan.FromSeconds,
-            ["seconds"] = TimeSpan.FromSeconds,
-            ["minute"] = TimeSpan.FromMinutes,
-            ["minutes"] = TimeSpan.FromMinutes,
-            ["hour"] = TimeSpan.FromHours,
-            ["hours"] = TimeSpan.FromHours,
-            ["day"] = TimeSpan.FromDays,
-            ["days"] = TimeSpan.FromDays,
-            ["week"] = v => TimeSpan.FromDays(v * 7),
-            ["weeks"] = v => TimeSpan.FromDays(v * 7),
-            ["month"] = v => TimeSpan.FromDays(v * 30),
-            ["months"] = v => TimeSpan.FromDays(v * 30),
-            ["year"] = v => TimeSpan.FromDays(v * 365),
-            ["years"] = v => TimeSpan.FromDays(v * 365),
-            ["decade"] = v => TimeSpan.FromDays(v * 365 * 10),
-            ["decades"] = v => TimeSpan.FromDays(v * 365 * 10),
-            ["century"] = v => TimeSpan.FromDays(v * 365 * 100),
-            ["centuries"] = v => TimeSpan.FromDays(v * 365 * 100),
-            ["millennium"] = v => TimeSpan.FromDays(v * 365 * 1000),
-            ["millennia"] = v => TimeSpan.FromDays(v * 365 * 1000)
-        };
+            foreach (var name in names)
+            {
+                if (string.IsNullOrWhiteSpace(name)) continue;
+                _timeUnitMap[name.Trim()] = converter;
+            }
+        }
 
-        _constructors = new(StringComparer.OrdinalIgnoreCase)
+        AddTimeUnitAliases(TimeSpan.FromSeconds, "second", "seconds");
+        AddTimeUnitAliases(TimeSpan.FromMinutes, "minute", "minutes");
+        AddTimeUnitAliases(TimeSpan.FromHours, "hour", "hours");
+        AddTimeUnitAliases(TimeSpan.FromDays, "day", "days");
+        AddTimeUnitAliases(v => TimeSpan.FromDays(v * 7), "week", "weeks");
+        AddTimeUnitAliases(v => TimeSpan.FromDays(v * 30), "month", "months");
+        AddTimeUnitAliases(v => TimeSpan.FromDays(v * 365), "year", "years");
+        AddTimeUnitAliases(v => TimeSpan.FromDays(v * 365 * 10), "decade", "decades");
+        AddTimeUnitAliases(v => TimeSpan.FromDays(v * 365 * 100), "century", "centuries");
+        AddTimeUnitAliases(v => TimeSpan.FromDays(v * 365 * 1000), "millennium", "millennia", "millenium");
+
+        _constructors = new(StringComparer.OrdinalIgnoreCase);
+        void AddConstructorAliases(IExpressionConstructor constructor, params string[] names)
         {
-            ["add"] = new AddExpressionConstructor()
-        };
+            foreach (var name in names)
+            {
+                if (string.IsNullOrWhiteSpace(name)) continue;
+                _constructors[name.Trim()] = constructor;
+            }
+        }
+
+        AddConstructorAliases(new AddExpressionConstructor(), "add");
+        AddConstructorAliases(new DeductExpressionConstructor(), "deduct", "subtract");
     }
 
     public bool TryCreateTimeSpan(double amount, string unit, out TimeSpan value)
     {
-        if (unit is null)
+        if (string.IsNullOrWhiteSpace(unit))
         {
             value = default;
             return false;
         }
 
-        if (_timeUnitMap.TryGetValue(unit.Trim(), out var converter))
+        var key = unit.Trim();
+        if (_timeUnitMap.TryGetValue(key, out var converter))
         {
             value = converter(amount);
             return true;
@@ -60,7 +66,7 @@ internal sealed class EnglishParserRules : ParserRules
 
     public override bool TryGetExpressionConstructor(string token, out IExpressionConstructor? constructor)
     {
-        if (token is null)
+        if (string.IsNullOrWhiteSpace(token))
         {
             constructor = null;
             return false;

@@ -2,11 +2,11 @@
 
 namespace STYME.Parser.Expressions.Constructors;
 
-internal sealed class AddExpressionConstructor : IExpressionConstructor
+internal sealed class DeductExpressionConstructor : IExpressionConstructor
 {
     public IExpression Construct(string token, Queue<string> tokens, IExpressionParser parser)
     {
         var right = parser.ParseExpressionTree(tokens) ?? throw new InvalidOperationException("Expected expression after keyword.");
-        return new AddExpression(right);
+        return new DeductExpression(right);
     }
 }
