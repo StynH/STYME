@@ -1,13 +1,13 @@
 ﻿using STYME.Handling;
 using STYME.Values.TimeShifts;
 
-namespace STYME.Expressions;
+namespace STYME.Expressions.Implementations;
 
-internal sealed class AddExpression : IExpression
+internal sealed class DeductExpression : IExpression
 {
     private readonly IExpression _right;
 
-    public AddExpression(IExpression right)
+    public DeductExpression(IExpression right)
     {
         _right = right;
     }
@@ -17,7 +17,7 @@ internal sealed class AddExpression : IExpression
         var result = _right.ExecuteExpression(time);
         if (result.TryGet<ITimeShift>(out var timeShift))
         {
-            return new ExpressionResult(timeShift.Shift(time));
+            return new ExpressionResult(timeShift.Negate().Shift(time));
         }
 
         return ExpressionResult.Empty;

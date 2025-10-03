@@ -22,7 +22,7 @@ Output (example):
 2025-10-04T14:23:00
 ```
 
-You can also parse expressions relative to a specific `DateTime` using `NaturalDateTime.From`.
+You can parse expressions relative to a specific `DateTime` using `NaturalDateTime.From`.
 
 ```csharp
 using STYME;
@@ -39,9 +39,29 @@ Output:
 2020-02-01T00:00:00
 ```
 
+### Add
+
+You can add time using the `add` keyword.
+
+```csharp
+using STYME;
+
+var baseTime = new DateTime(2020, 3, 1, 12, 0, 0);
+var parser = NaturalDateTime.From(baseTime);
+var result = parser.Parse("add 1 year");
+Console.WriteLine(result);
+```
+
+Output:
+
+```
+2021-03-01T00:00:00
+```
+
+
 ### Deduct / Subtract
 
-You can subtract time using the `deduct` (or `subtract`) keyword. The expression works the same as `add` but shifts the base time backwards.
+You can subtract time using the `deduct` (or `subtract`) keyword.
 
 ```csharp
 using STYME;
@@ -82,6 +102,13 @@ var parser = NaturalDateTime.From(new DateTime(2000, 1, 1));
 Console.WriteLine(parser.Parse("add 2 decades")); // 2020-01-01
 Console.WriteLine(parser.Parse("deduct 1 century")); // 1900-01-01
 ```
+
+### Todo
+
+[ ] Add month support (set DateTime to specific month)
+[ ] Add day support (i.e. "next friday")
+[ ] Add complex time support (i.e. "quarter past five")
+[ ] Add multiple complex operations (i.e. "add one year then next friday")
 
 ## Support
 

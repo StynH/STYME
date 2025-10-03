@@ -1,7 +1,7 @@
 ﻿using STYME.Handling;
 using STYME.Values.TimeShifts;
 
-namespace STYME.Expressions;
+namespace STYME.Expressions.Implementations;
 
 internal sealed class TimeShiftExpression : IExpression
 {

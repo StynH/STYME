@@ -11,15 +11,6 @@ internal sealed class EnglishParserRules : ParserRules
     public EnglishParserRules()
     {
         _timeUnitMap = new(StringComparer.OrdinalIgnoreCase);
-        void AddTimeUnitAliases(Func<double, TimeSpan> converter, params string[] names)
-        {
-            foreach (var name in names)
-            {
-                if (string.IsNullOrWhiteSpace(name)) continue;
-                _timeUnitMap[name.Trim()] = converter;
-            }
-        }
-
         AddTimeUnitAliases(TimeSpan.FromSeconds, "second", "seconds");
         AddTimeUnitAliases(TimeSpan.FromMinutes, "minute", "minutes");
         AddTimeUnitAliases(TimeSpan.FromHours, "hour", "hours");
@@ -32,17 +23,33 @@ internal sealed class EnglishParserRules : ParserRules
         AddTimeUnitAliases(v => TimeSpan.FromDays(v * 365 * 1000), "millennium", "millennia", "millenium");
 
         _constructors = new(StringComparer.OrdinalIgnoreCase);
-        void AddConstructorAliases(IExpressionConstructor constructor, params string[] names)
-        {
-            foreach (var name in names)
-            {
-                if (string.IsNullOrWhiteSpace(name)) continue;
-                _constructors[name.Trim()] = constructor;
-            }
-        }
-
         AddConstructorAliases(new AddExpressionConstructor(), "add");
         AddConstructorAliases(new DeductExpressionConstructor(), "deduct", "subtract");
+    }
+
+    private void AddConstructorAliases(IExpressionConstructor constructor, params string[] names)
+    {
+        foreach (var name in names)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                continue;
+            }
+
+            _constructors[name.Trim()] = constructor;
+        }
+    }
+    private void AddTimeUnitAliases(Func<double, TimeSpan> converter, params string[] names)
+    {
+        foreach (var name in names)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                continue;
+            }
+
+            _timeUnitMap[name.Trim()] = converter;
+        }
     }
 
     public bool TryCreateTimeSpan(double amount, string unit, out TimeSpan value)
