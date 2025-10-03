@@ -3,7 +3,7 @@
     <PropertyGroup>
         <Version>0.1.0</Version>
         <Summary>A zero-dependency library that allows for manipulating dates and times using natural language.</Summary>
-        <Description>A zero-dependency library that allows for manipulating dates and times using natural language.</Description>
+        <Description>A zero-dependency library that allows for manipulating dates and times using natural language, for example "add 1 day" or "deduct 3 hours".</Description>
         <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
         <LangVersion>13.0</LangVersion>
         <AssemblyName>STYME</AssemblyName>
@@ -31,7 +31,9 @@
     <PropertyGroup>
         <Version>0.1.0</Version>
         <PackageReleaseNotes>
-            - Initial release
+            - Initial release.
+            - Implemented `add` expression to shift a base `DateTime` by an amount.
+            - Implemented `deduct`/`subtract` expression to shift a base `DateTime` backwards by an amount.
         </PackageReleaseNotes>
     </PropertyGroup>
 
