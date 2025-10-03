@@ -1,5 +1,5 @@
 ﻿# ![Icon](logo.png) 
-![NuGet Version](https://img.shields.io/nuget/v/STYME)
+![NuGet Version](https://img.shields.io/nuget/v/STYME) ![NuGet Downloads](https://img.shields.io/nuget/dt/STYME)
 
 STYME is a lightweight, zero-dependency C# library for parsing simple natural-language date/time expressions and applying them to a base date/time.
 
