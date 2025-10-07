@@ -37,4 +37,15 @@ public sealed class NaturalDateTimeChainingTests
 
         result.Should().Be(new DateTime(2025, 1, 2, 9, 30, 0));
     }
+
+    [TestMethod]
+    public void Given_2025_01_01T00_00_00_When_MultipleAnds_Then_ChainedCorrectly()
+    {
+        var baseDate = new DateTime(2025, 1, 1, 0, 0, 0);
+        var sut = NaturalDateTime.From(baseDate);
+
+        var result = sut.Parse("add 1 day and add 2 hours and add 30 minutes and deduct 15 seconds");
+
+        result.Should().Be(new DateTime(2025, 1, 2, 2, 29, 45));
+    }
 }

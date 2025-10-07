@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     
     <PropertyGroup>
-        <Version>0.2.0</Version>
+        <Version>0.2.1</Version>
         <Summary>A zero-dependency library that allows for manipulating dates and times using natural language.</Summary>
         <Description>A zero-dependency library that allows for manipulating dates and times using natural language, for example "add 1 day" or "deduct 3 hours".</Description>
         <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
@@ -29,9 +29,9 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <Version>0.2.0</Version>
+        <Version>0.2.1</Version>
         <PackageReleaseNotes>
-            - Implemented `and` for chained expressions.
+            - Fixed a bug with `and` throwing an exception.
         </PackageReleaseNotes>
     </PropertyGroup>
 

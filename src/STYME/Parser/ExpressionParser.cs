@@ -31,6 +31,7 @@ internal sealed class ExpressionParser : IExpressionParser
 
         while (tokens.TryPeek(out var next) && _rules.IsConjunction(next))
         {
+            tokens.Dequeue();
             var right = ParsePrimary(tokens) ?? throw new InvalidOperationException("Expected expression after conjunction.");
             expr = new SequenceExpression(expr, right);
         }
