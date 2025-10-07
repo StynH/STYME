@@ -80,7 +80,7 @@ Output:
 
 ### Chaining operations
 
-STYME supports chaining multiple operations using conjunctions. In English you can join expressions with `and`.
+You can chain multiple operations using `and`.
 
 ```csharp
 using STYME;
