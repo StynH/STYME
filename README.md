@@ -78,6 +78,25 @@ Output:
 2020-02-01T12:00:00
 ```
 
+### Chaining operations
+
+STYME supports chaining multiple operations using conjunctions. In English you can join expressions with `and`.
+
+```csharp
+using STYME;
+
+var baseTime = new DateTime(2020, 1, 1, 0, 0, 0);
+var parser = NaturalDateTime.From(baseTime);
+var result = parser.Parse("add 3 days and deduct 5 hours");
+Console.WriteLine(result);
+```
+
+Output:
+
+```
+2020-01-03T19:00:00
+```
+
 ### Supported units with `add` and `deduct`
 
 The `add` and `deduct` expressions support the following units (singular and plural forms):

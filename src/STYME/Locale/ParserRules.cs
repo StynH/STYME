@@ -9,4 +9,9 @@ internal abstract class ParserRules
     }
 
     public abstract bool TryGetExpressionConstructor(string token, out IExpressionConstructor? constructor);
+
+    public virtual bool IsConjunction(string token)
+    {
+        return false;
+    }
 }

@@ -8,6 +8,8 @@ namespace STYME.Parser;
 internal interface IExpressionParser
 {
     IExpression? ParseExpressionTree(Queue<string> tokens);
+
+    IExpression? ParsePrimary(Queue<string> tokens);
 }
 
 internal sealed class ExpressionParser : IExpressionParser
@@ -20,6 +22,23 @@ internal sealed class ExpressionParser : IExpressionParser
     }
 
     public IExpression? ParseExpressionTree(Queue<string> tokens)
+    {
+        var expr = ParsePrimary(tokens);
+        if (expr is null)
+        {
+            return null;
+        }
+
+        while (tokens.TryPeek(out var next) && _rules.IsConjunction(next))
+        {
+            var right = ParsePrimary(tokens) ?? throw new InvalidOperationException("Expected expression after conjunction.");
+            expr = new SequenceExpression(expr, right);
+        }
+
+        return expr;
+    }
+
+    public IExpression? ParsePrimary(Queue<string> tokens)
     {
         if (!tokens.TryDequeue(out var token))
         {

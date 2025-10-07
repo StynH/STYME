@@ -15,6 +15,11 @@ internal sealed class AddExpression : IExpression
     public ExpressionResult ExecuteExpression(IMutableTime time)
     {
         var result = _right.ExecuteExpression(time);
+        if (result.TryGet<IMutableTime>(out var mutable))
+        {
+            return new ExpressionResult(mutable);
+        }
+
         if (result.TryGet<ITimeShift>(out var timeShift))
         {
             return new ExpressionResult(timeShift.Shift(time));

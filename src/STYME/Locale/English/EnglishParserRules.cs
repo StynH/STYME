@@ -81,4 +81,14 @@ internal sealed class EnglishParserRules : ParserRules
 
         return _constructors.TryGetValue(token.Trim(), out constructor);
     }
+
+    public override bool IsConjunction(string token)
+    {
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            return false;
+        }
+
+        return string.Equals(token.Trim(), "and", StringComparison.OrdinalIgnoreCase);
+    }
 }
