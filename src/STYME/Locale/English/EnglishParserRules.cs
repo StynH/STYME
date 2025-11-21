@@ -25,6 +25,7 @@ internal sealed class EnglishParserRules : ParserRules
         _constructors = new(StringComparer.OrdinalIgnoreCase);
         AddConstructorAliases(new AddExpressionConstructor(), "add");
         AddConstructorAliases(new DeductExpressionConstructor(), "deduct", "subtract");
+        AddConstructorAliases(new EveryExpressionConstructor(), "every");
     }
 
     private void AddConstructorAliases(IExpressionConstructor constructor, params string[] names)

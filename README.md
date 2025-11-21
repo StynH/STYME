@@ -97,6 +97,37 @@ Output:
 2020-01-03T19:00:00
 ```
 
+### Recurring schedules
+
+You can generate a lazy sequence of future dates using `every`. The sequence is infinite, so add your own break condition.
+
+```csharp
+using STYME;
+
+var baseTime = new DateTime(2025, 1, 1, 0, 0, 0);
+var parser = NaturalDateTime.From(baseTime);
+var schedule = parser.Enumerate("every 2 weeks");
+
+foreach (var occurrence in schedule)
+{
+    Console.WriteLine(occurrence);
+    // Break when you reach the point you care about.
+    if (occurrence >= new DateTime(2025, 2, 12))
+    {
+        break;
+    }
+}
+```
+
+Output:
+
+```
+2025-01-01T00:00:00
+2025-01-15T00:00:00
+2025-01-29T00:00:00
+2025-02-12T00:00:00
+```
+
 ### Supported units with `add` and `deduct`
 
 The `add` and `deduct` expressions support the following units (singular and plural forms):

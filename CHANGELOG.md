@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0] - 2025-11-21
+
+- Implemented `every` expression to return an enumerable for a given interval.
+
 ## [0.2.1] - 2025-10-07
 
 - Fixed a bug with `and` throwing an exception.

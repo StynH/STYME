@@ -37,4 +37,18 @@ public class NaturalDateTime
         //TODO: Placeholder.
         return DateTime.Now;
     }
+
+    public IEnumerable<DateTime> Enumerate(string value)
+    {
+        var tokens = new Queue<string>(value.Split(' '));
+        var root = _expressionParser.ParseExpressionTree(tokens) ?? throw new InvalidOperationException("Expression expected.");
+
+        var result = root.ExecuteExpression(_mutableTime);
+        if (result.TryGet<IEnumerable<DateTime>>(out var sequence) && sequence is not null)
+        {
+            return sequence;
+        }
+
+        throw new InvalidOperationException("Expression did not produce a recurring sequence.");
+    }
 }
