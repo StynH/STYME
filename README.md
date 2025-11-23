@@ -97,7 +97,7 @@ Output:
 2020-01-03T19:00:00
 ```
 
-### `"next"` references
+### Next
 
 Use `next` to jump to the upcoming occurrence of a day of the week or a month. The time of day is preserved.
 
@@ -133,7 +133,7 @@ Output:
 2025-01-03T10:00:00
 ```
 
-### `"end of"` references
+### End of week/month/year
 
 Use `end` to move to the end of the current week, month, or year. Fillers such as `of` and `the` are optional.
 
