@@ -212,8 +212,8 @@ Console.WriteLine(parser.Parse("deduct 1 century")); // 1900-01-01
 
 * [x] Add month support (set DateTime to specific month)
 * [x] Add day support (i.e. "next friday")
-* [] Add complex time support (i.e. "quarter past five")
-* [] Add multiple complex operations (i.e. "add one year then next friday")
+* [ ] Add complex time support (i.e. "quarter past five")
+* [ ] Add multiple complex operations (i.e. "add one year then next friday")
 
 ## Support
 
