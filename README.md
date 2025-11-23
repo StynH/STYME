@@ -97,6 +97,61 @@ Output:
 2020-01-03T19:00:00
 ```
 
+### `"next"` references
+
+Use `next` to jump to the upcoming occurrence of a day of the week or a month. The time of day is preserved.
+
+```csharp
+using STYME;
+
+var baseTime = new DateTime(2025, 1, 1, 8, 0, 0);
+var parser = NaturalDateTime.From(baseTime);
+var result = parser.Parse("next monday");
+Console.WriteLine(result);
+```
+
+Output:
+
+```
+2025-01-06T08:00:00
+```
+
+This operator can also be chained with the `and` operator.
+
+```csharp
+using STYME;
+
+var baseTime = new DateTime(2025, 1, 1, 8, 0, 0);
+var parser = NaturalDateTime.From(baseTime);
+var result = parser.Parse("next friday and add 2 hours");
+Console.WriteLine(result);
+```
+
+Output:
+
+```
+2025-01-03T10:00:00
+```
+
+### `"end of"` references
+
+Use `end` to move to the end of the current week, month, or year. Fillers such as `of` and `the` are optional.
+
+```csharp
+using STYME;
+
+var baseTime = new DateTime(2025, 6, 15, 20, 45, 0);
+var parser = NaturalDateTime.From(baseTime);
+var result = parser.Parse("end of the month");
+Console.WriteLine(result);
+```
+
+Output:
+
+```
+2025-06-30T20:45:00
+```
+
 ### Recurring schedules
 
 You can generate a lazy sequence of future dates using `every`. The sequence is infinite, so add your own break condition.
@@ -155,10 +210,10 @@ Console.WriteLine(parser.Parse("deduct 1 century")); // 1900-01-01
 
 ### Todo
 
-[] Add month support (set DateTime to specific month)
-[] Add day support (i.e. "next friday")
-[] Add complex time support (i.e. "quarter past five")
-[] Add multiple complex operations (i.e. "add one year then next friday")
+* [x] Add month support (set DateTime to specific month)
+* [x] Add day support (i.e. "next friday")
+* [] Add complex time support (i.e. "quarter past five")
+* [] Add multiple complex operations (i.e. "add one year then next friday")
 
 ## Support
 

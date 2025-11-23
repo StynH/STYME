@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     
     <PropertyGroup>
-        <Version>0.3.0</Version>
+        <Version>0.4.0</Version>
         <Summary>A zero-dependency library that allows for manipulating dates and times using natural language.</Summary>
         <Description>A zero-dependency library that allows for manipulating dates and times using natural language, for example "add 1 day" or "deduct 3 hours".</Description>
         <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
@@ -29,9 +29,10 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <Version>0.3.0</Version>
+        <Version>0.4.0</Version>
         <PackageReleaseNotes>
-            - Implemented `every` expression to return an enumerable for a given interval.
+            - Added support for `next` expressions targeting days of the week and months.
+            - Added support for `end of` expressions targeting weeks, months, and years.
         </PackageReleaseNotes>
     </PropertyGroup>
 

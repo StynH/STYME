@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.0] - 2025-11-23
+
+- Implemented `next` expression to target days of the week and months.
+- Implemented `end of` expression to target weeks, months, and years.
+
 ## [0.3.0] - 2025-11-21
 
 - Implemented `every` expression to return an enumerable for a given interval.

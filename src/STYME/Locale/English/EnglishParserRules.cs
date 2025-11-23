@@ -26,6 +26,8 @@ internal sealed class EnglishParserRules : ParserRules
         AddConstructorAliases(new AddExpressionConstructor(), "add");
         AddConstructorAliases(new DeductExpressionConstructor(), "deduct", "subtract");
         AddConstructorAliases(new EveryExpressionConstructor(), "every");
+        AddConstructorAliases(new NextExpressionConstructor(), "next");
+        AddConstructorAliases(new EndOfExpressionConstructor(), "end");
     }
 
     private void AddConstructorAliases(IExpressionConstructor constructor, params string[] names)
